@@ -33,6 +33,7 @@ interface PageBuilderViewProps {
   socials: SocialProfile[];
   blocks: ContentBlock[];
   primaryDomain?: string;
+  onUpdateProfile: (updates: Partial<ProfileConfig>) => void;
   onUpdateBlocks: (nextBlocks: ContentBlock[]) => void;
   onUpdateSocials: (nextSocials: SocialProfile[]) => void;
   onRecordEvent: (
@@ -66,6 +67,7 @@ export const PageBuilderView: React.FC<PageBuilderViewProps> = ({
   socials,
   blocks,
   primaryDomain,
+  onUpdateProfile,
   onUpdateBlocks,
   onUpdateSocials,
   onRecordEvent,
@@ -850,6 +852,7 @@ export const PageBuilderView: React.FC<PageBuilderViewProps> = ({
                   primaryDomain={primaryDomain}
                   isPreview={previewDevice === 'mobile'}
                   onRecordEvent={onRecordEvent}
+                  onQuickSwitchDesign={onUpdateProfile}
                 />
               </div>
             </div>

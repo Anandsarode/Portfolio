@@ -1,5 +1,14 @@
-export type ThemePresetId = 'alabaster' | 'monograph' | 'obsidian' | 'travertine';
-export type LayoutModeId = 'editorial-split' | 'monograph-column' | 'bento-showcase';
+export type ThemePresetId = 'monograph' | 'obsidian' | 'alabaster' | 'travertine';
+export type LayoutModeId =
+  | 'architectural-grid'
+  | 'avant-kinetic'
+  | 'broadsheet-journal'
+  | 'couture-salon'
+  | 'editorial-split'
+  | 'monograph-column'
+  | 'bento-showcase';
+
+export type FontPairingId = 'bricolage' | 'syne' | 'fraunces' | 'bodoni' | 'oswald';
 
 export interface ProfileConfig {
   displayName: string;
@@ -11,6 +20,7 @@ export interface ProfileConfig {
   coverUrl: string;
   themePreset: ThemePresetId;
   layoutMode: LayoutModeId;
+  fontPairing?: FontPairingId;
   darkMode: boolean;
   showMarquee: boolean;
   marqueeText: string;

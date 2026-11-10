@@ -254,9 +254,9 @@ export default function App() {
   const primaryDomain = appState.domains.find((d) => d.isPrimary)?.domain;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] dark:bg-[#0C0C0E] text-[#181615] dark:text-[#F4F1EA] transition-colors">
+    <div className="min-h-screen flex flex-col bg-[#F6F6F3] dark:bg-[#0B0C0E] text-[#111215] dark:text-[#F3F4F6] transition-colors">
       {/* Strict 3-Zone Top Bar Contract */}
-      <header className="flex items-center justify-between gap-8 px-6 py-4 border-b border-[#E6E1DA] dark:border-[#26262B] bg-[#FAF8F5]/95 dark:bg-[#0C0C0E]/95 backdrop-blur-xs sticky top-0 z-30">
+      <header className="flex items-center justify-between gap-8 px-6 py-4 border-b border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3]/95 dark:bg-[#0B0C0E]/95 backdrop-blur-xs sticky top-0 z-30">
         {/* Zone 1: Single text element wordmark */}
         <a
           href="#studio"
@@ -265,22 +265,22 @@ export default function App() {
             setIsLivePageView(false);
             setActiveTab('builder');
           }}
-          className="font-editorial text-2xl font-semibold tracking-tight text-[#181615] dark:text-[#F4F1EA] whitespace-nowrap shrink-0"
+          className="font-editorial text-xl sm:text-2xl font-extrabold tracking-tight text-[#111215] dark:text-[#F3F4F6] whitespace-nowrap shrink-0"
         >
           Atelier Link
         </a>
 
         {/* Zone 2: 5 concise single-line text navigation links */}
-        <nav className="flex items-center gap-6 text-xs sm:text-sm font-medium text-[#6E6A63] dark:text-[#9E988E] overflow-x-auto">
+        <nav className="flex items-center gap-6 text-xs sm:text-sm font-medium text-[#6E717A] dark:text-[#9CA3AF] overflow-x-auto">
           <button
             type="button"
             onClick={() => {
               setIsLivePageView(false);
               setActiveTab('builder');
             }}
-            className={`hover:text-[#181615] dark:hover:text-[#F4F1EA] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`hover:text-[#111215] dark:hover:text-[#F3F4F6] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               !isLivePageView && activeTab === 'builder'
-                ? 'text-[#181615] dark:text-[#F4F1EA] underline underline-offset-8 decoration-[#C84B31] decoration-2'
+                ? 'text-[#111215] dark:text-[#F3F4F6] underline underline-offset-8 decoration-[#1D4ED8] decoration-2'
                 : ''
             }`}
           >
@@ -293,9 +293,9 @@ export default function App() {
               setIsLivePageView(false);
               setActiveTab('analytics');
             }}
-            className={`hover:text-[#181615] dark:hover:text-[#F4F1EA] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`hover:text-[#111215] dark:hover:text-[#F3F4F6] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               !isLivePageView && activeTab === 'analytics'
-                ? 'text-[#181615] dark:text-[#F4F1EA] underline underline-offset-8 decoration-[#C84B31] decoration-2'
+                ? 'text-[#111215] dark:text-[#F3F4F6] underline underline-offset-8 decoration-[#1D4ED8] decoration-2'
                 : ''
             }`}
           >
@@ -308,9 +308,9 @@ export default function App() {
               setIsLivePageView(false);
               setActiveTab('domains');
             }}
-            className={`hover:text-[#181615] dark:hover:text-[#F4F1EA] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`hover:text-[#111215] dark:hover:text-[#F3F4F6] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               !isLivePageView && activeTab === 'domains'
-                ? 'text-[#181615] dark:text-[#F4F1EA] underline underline-offset-8 decoration-[#C84B31] decoration-2'
+                ? 'text-[#111215] dark:text-[#F3F4F6] underline underline-offset-8 decoration-[#1D4ED8] decoration-2'
                 : ''
             }`}
           >
@@ -323,13 +323,13 @@ export default function App() {
               setIsLivePageView(false);
               setActiveTab('appearance');
             }}
-            className={`hover:text-[#181615] dark:hover:text-[#F4F1EA] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`hover:text-[#111215] dark:hover:text-[#F3F4F6] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               !isLivePageView && activeTab === 'appearance'
-                ? 'text-[#181615] dark:text-[#F4F1EA] underline underline-offset-8 decoration-[#C84B31] decoration-2'
+                ? 'text-[#111215] dark:text-[#F3F4F6] underline underline-offset-8 decoration-[#1D4ED8] decoration-2'
                 : ''
             }`}
           >
-            Appearance
+            Page Designs & Fonts
           </button>
 
           <button
@@ -338,9 +338,9 @@ export default function App() {
               setIsLivePageView(false);
               setActiveTab('health');
             }}
-            className={`hover:text-[#181615] dark:hover:text-[#F4F1EA] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`hover:text-[#111215] dark:hover:text-[#F3F4F6] transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               !isLivePageView && activeTab === 'health'
-                ? 'text-[#181615] dark:text-[#F4F1EA] underline underline-offset-8 decoration-[#C84B31] decoration-2'
+                ? 'text-[#111215] dark:text-[#F3F4F6] underline underline-offset-8 decoration-[#1D4ED8] decoration-2'
                 : ''
             }`}
           >
@@ -359,7 +359,7 @@ export default function App() {
                 handleRecordEvent('page_view', 'landing-page', 'Public Landing Page');
               }
             }}
-            className="px-4 py-2 text-xs font-medium bg-[#181615] dark:bg-[#F4F1EA] text-[#FAF8F5] dark:text-[#0C0C0E] rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap shrink-0 cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold bg-[#111215] dark:bg-[#F3F4F6] text-white dark:text-[#0B0C0E] rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap shrink-0 cursor-pointer"
           >
             {isLivePageView ? 'Return to Studio' : 'View Live Page'}
           </button>
@@ -376,6 +376,7 @@ export default function App() {
             primaryDomain={primaryDomain}
             isPreview={false}
             onRecordEvent={handleRecordEvent}
+            onQuickSwitchDesign={handleUpdateProfile}
           />
         ) : (
           <>
@@ -385,6 +386,7 @@ export default function App() {
                 socials={appState.socials}
                 blocks={appState.blocks}
                 primaryDomain={primaryDomain}
+                onUpdateProfile={handleUpdateProfile}
                 onUpdateBlocks={handleUpdateBlocks}
                 onUpdateSocials={handleUpdateSocials}
                 onRecordEvent={handleRecordEvent}

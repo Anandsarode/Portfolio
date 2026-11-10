@@ -3,14 +3,13 @@
 
 @layer base {
   :root {
-    --font-display: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
   }
 
   body {
     font-family: var(--font-sans);
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
   h1, h2, h3, .font-editorial {
@@ -21,6 +20,43 @@
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
+}
+
+/* Signature Font Pairing Systems for Page Designs */
+.font-pair-bricolage {
+  --page-display: 'Bricolage Grotesque', sans-serif;
+  --page-body: 'DM Sans', sans-serif;
+}
+
+.font-pair-fraunces {
+  --page-display: 'Fraunces', Georgia, serif;
+  --page-body: 'Public Sans', sans-serif;
+}
+
+.font-pair-syne {
+  --page-display: 'Syne', sans-serif;
+  --page-body: 'Urbanist', sans-serif;
+}
+
+.font-pair-bodoni {
+  --page-display: 'Bodoni Moda', Georgia, serif;
+  --page-body: 'DM Sans', sans-serif;
+}
+
+.font-pair-oswald {
+  --page-display: 'Oswald', sans-serif;
+  --page-body: 'Public Sans', sans-serif;
+}
+
+.page-font-scope {
+  font-family: var(--page-body, var(--font-sans));
+}
+
+.page-font-scope h1,
+.page-font-scope h2,
+.page-font-scope h3,
+.page-font-scope .page-display {
+  font-family: var(--page-display, var(--font-display));
 }
 
 @keyframes marquee {
@@ -35,7 +71,7 @@
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 32s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

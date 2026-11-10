@@ -325,7 +325,14 @@ function loadState(): AppState {
     if (fs.existsSync(STORE_PATH)) {
       const raw = fs.readFileSync(STORE_PATH, 'utf-8');
       const parsed = JSON.parse(raw);
-      return { ...DEFAULT_STATE, ...parsed };
+      const merged: AppState = { ...DEFAULT_STATE, ...parsed };
+      if (!merged.profile.fontPairing) {
+        merged.profile.fontPairing = 'bricolage';
+        merged.profile.layoutMode = 'architectural-grid';
+        merged.profile.themePreset = 'monograph';
+        saveState(merged);
+      }
+      return merged;
     }
   } catch (err) {
     console.error('Failed to read store, initializing default state:', err);

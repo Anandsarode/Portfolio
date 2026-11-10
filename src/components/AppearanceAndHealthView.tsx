@@ -8,11 +8,13 @@ import {
   Palette,
   Layout,
   User,
+  Type,
 } from 'lucide-react';
 import type {
   ProfileConfig,
   ThemePresetId,
   LayoutModeId,
+  FontPairingId,
   DiagnosticReportItem,
 } from '../types';
 
@@ -25,6 +27,87 @@ interface AppearanceAndHealthViewProps {
   onRunDiagnostics: (autoResolve: boolean) => Promise<void>;
 }
 
+const LAYOUT_OPTIONS: Array<{
+  id: LayoutModeId;
+  name: string;
+  recommendedFont: FontPairingId;
+  badge: string;
+  desc: string;
+}> = [
+  {
+    id: 'architectural-grid',
+    name: '01. Architectural Swiss Grid',
+    recommendedFont: 'bricolage',
+    badge: 'Blueprint Grid · Bricolage Grotesque',
+    desc: 'Exposed structural blueprint cells, numbered index ledger, and a 3-column social matrix.',
+  },
+  {
+    id: 'avant-kinetic',
+    name: '02. Avant-Garde Kinetic Showcase',
+    recommendedFont: 'syne',
+    badge: 'Panoramic Hero · Syne Display',
+    desc: 'Panoramic cover banner with overlapping portrait badge and wide interactive link rows.',
+  },
+  {
+    id: 'broadsheet-journal',
+    name: '03. The Editorial Broadsheet',
+    recommendedFont: 'fraunces',
+    badge: 'Periodical Masthead · Fraunces Serif',
+    desc: 'Centered periodical masthead with double horizontal rules and 2-column dispatch essays.',
+  },
+  {
+    id: 'couture-salon',
+    name: '04. Haute Couture Lookbook',
+    recommendedFont: 'bodoni',
+    badge: 'Arch Medallion · Bodoni Moda',
+    desc: 'Arch-framed portrait medallion and centered gallery exhibition plates with high-contrast type.',
+  },
+];
+
+const FONT_OPTIONS: Array<{
+  id: FontPairingId;
+  displayFontName: string;
+  bodyFontName: string;
+  cssClass: string;
+  characterNote: string;
+}> = [
+  {
+    id: 'bricolage',
+    displayFontName: 'Bricolage Grotesque',
+    bodyFontName: 'DM Sans',
+    cssClass: 'font-pair-bricolage',
+    characterNote: 'Contemporary neo-grotesque display with crisp architectural geometry.',
+  },
+  {
+    id: 'syne',
+    displayFontName: 'Syne ExtraBold',
+    bodyFontName: 'Urbanist',
+    cssClass: 'font-pair-syne',
+    characterNote: 'Art-center display proportions designed for kinetic creative studios.',
+  },
+  {
+    id: 'fraunces',
+    displayFontName: 'Fraunces Oldstyle',
+    bodyFontName: 'Public Sans',
+    cssClass: 'font-pair-fraunces',
+    characterNote: 'Expressive Literary & Broadsheet serif with warm organic stroke modulation.',
+  },
+  {
+    id: 'bodoni',
+    displayFontName: 'Bodoni Moda',
+    bodyFontName: 'DM Sans',
+    cssClass: 'font-pair-bodoni',
+    characterNote: 'High-fashion Italian hairline serif crafted for luxury lookbooks.',
+  },
+  {
+    id: 'oswald',
+    displayFontName: 'Oswald Condensed',
+    bodyFontName: 'Public Sans',
+    cssClass: 'font-pair-oswald',
+    characterNote: 'Tall industrial headline structure with high-density vertical presence.',
+  },
+];
+
 const THEME_OPTIONS: Array<{
   id: ThemePresetId;
   name: string;
@@ -34,58 +117,36 @@ const THEME_OPTIONS: Array<{
   swatchAccent: string;
 }> = [
   {
-    id: 'alabaster',
-    name: 'Warm Alabaster & Cinnabar',
-    desc: 'Warm stone neutral canvas paired with deep espresso ink and terracotta highlights.',
-    swatchBg: '#FAF8F5',
-    swatchSurface: '#F3EFEA',
-    swatchAccent: '#C84B31',
-  },
-  {
     id: 'monograph',
-    name: 'Swiss Monograph Paper',
-    desc: 'Crisp gallery white canvas with high-contrast monochrome ink and cobalt accents.',
-    swatchBg: '#FFFFFF',
-    swatchSurface: '#F7F7F5',
+    name: 'Swiss Gallery Paper & Cobalt',
+    desc: 'Crisp architectural gallery paper with deep ink borders and electric cobalt accents.',
+    swatchBg: '#F6F6F3',
+    swatchSurface: '#FFFFFF',
     swatchAccent: '#1D4ED8',
   },
   {
-    id: 'travertine',
-    name: 'Roman Travertine & Umber',
-    desc: 'Rich limestone paper field inspired by architectural exhibition catalogues.',
-    swatchBg: '#F2ECE1',
-    swatchSurface: '#E8E0D2',
-    swatchAccent: '#9E3B24',
-  },
-  {
     id: 'obsidian',
-    name: 'Obsidian Nocturne',
-    desc: 'Deep architectural slate surface with warm parchment typography for evening viewing.',
-    swatchBg: '#0C0C0E',
-    swatchSurface: '#151519',
-    swatchAccent: '#D96B43',
-  },
-];
-
-const LAYOUT_OPTIONS: Array<{
-  id: LayoutModeId;
-  name: string;
-  desc: string;
-}> = [
-  {
-    id: 'editorial-split',
-    name: 'Editorial Split Hero + 2-Column Grid',
-    desc: 'Asymmetric magazine header pairing oversized serif typography with a vertical cover frame.',
+    name: 'Obsidian Carbon & Azure',
+    desc: 'Deep carbon slate architecture with high-contrast silver typography.',
+    swatchBg: '#0B0C0E',
+    swatchSurface: '#131519',
+    swatchAccent: '#3B82F6',
   },
   {
-    id: 'monograph-column',
-    name: 'Monograph Single-Column Stack',
-    desc: 'Focused full-width linear reading flow ideal for essays, publications, and music.',
+    id: 'alabaster',
+    name: 'Warm Alabaster & Cinnabar',
+    desc: 'Warm stone neutral canvas paired with espresso ink and terracotta highlights.',
+    swatchBg: '#FAF7F2',
+    swatchSurface: '#F2EDE4',
+    swatchAccent: '#C84B31',
   },
   {
-    id: 'bento-showcase',
-    name: 'Curated Bento Showcase',
-    desc: 'Panoramic header banner above a modular 2-column Bento grid of featured works.',
+    id: 'travertine',
+    name: 'Limestone & Deep Teal',
+    desc: 'Tactile architectural stone field paired with deep mineral teal accents.',
+    swatchBg: '#EFECE6',
+    swatchSurface: '#E5E0D7',
+    swatchAccent: '#0F766E',
   },
 ];
 
@@ -124,9 +185,9 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
 
     return (
       <div className="max-w-[1400px] mx-auto px-6 py-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#E6E1DA] dark:border-[#26262B]">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#DCDCD4] dark:border-[#262932]">
           <div>
-            <div className="flex items-center gap-2 text-xs text-[#6E6A63] dark:text-[#9E988E] mb-1">
+            <div className="flex items-center gap-2 text-xs text-[#6E717A] mb-1">
               <span>Automated Quality Assurance</span>
               <span aria-hidden="true">·</span>
               <span>HTTP Endpoint, Embed & DNS Verification</span>
@@ -139,7 +200,7 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
                 </>
               )}
             </div>
-            <h1 className="font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-[#181615] dark:text-[#F4F1EA]">
+            <h1 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-[#111215] dark:text-[#F3F4F6]">
               Daily Link, Embed & Domain Health Check
             </h1>
           </div>
@@ -149,7 +210,7 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
               type="button"
               onClick={() => triggerDiagnostic(false)}
               disabled={isRunningCheck}
-              className="px-4 py-2 text-xs font-medium border border-[#D8D2C9] dark:border-[#323238] bg-white dark:bg-[#16161A] text-[#181615] dark:text-[#F4F1EA] rounded-lg hover:bg-[#F3EFEA] dark:hover:bg-[#222228] disabled:opacity-50 flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+              className="px-4 py-2 text-xs font-medium border border-[#DCDCD4] dark:border-[#323540] bg-white dark:bg-[#131519] text-[#111215] dark:text-[#F3F4F6] rounded-lg hover:bg-[#EFEFEA] disabled:opacity-50 flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isRunningCheck ? 'animate-spin' : ''}`} />
               <span>{isRunningCheck ? 'Scanning Endpoints...' : 'Run Daily Health Scan'}</span>
@@ -159,7 +220,7 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
               type="button"
               onClick={() => triggerDiagnostic(true)}
               disabled={isRunningCheck}
-              className="px-4 py-2 text-xs font-medium bg-[#181615] dark:bg-[#F4F1EA] text-[#FAF8F5] dark:text-[#0C0C0E] rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+              className="px-4 py-2 text-xs font-medium bg-[#111215] dark:bg-[#F3F4F6] text-white dark:text-[#0B0C0E] rounded-lg hover:opacity-90 disabled:opacity-50 flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
             >
               <Wrench className="w-3.5 h-3.5" />
               <span>Scan & Auto-Resolve Issues</span>
@@ -167,60 +228,52 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
           </div>
         </div>
 
-        {/* Summary Metrics Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <div className="border border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] rounded-xl p-5">
-            <div className="text-xs text-[#6E6A63] dark:text-[#9E988E]">
-              Verified Healthy Endpoints
-            </div>
+          <div className="border border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] rounded-xl p-5">
+            <div className="text-xs text-[#6E717A]">Verified Healthy Endpoints</div>
             <div className="mt-1 font-mono text-3xl font-semibold tabular-nums text-[#15803D]">
               {healthyCount}
             </div>
-            <div className="mt-1 text-xs text-[#6E6A63]">
+            <div className="mt-1 text-xs text-[#6E717A]">
               Links, social profiles, and embeds responding cleanly
             </div>
           </div>
 
-          <div className="border border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] rounded-xl p-5">
-            <div className="text-xs text-[#6E6A63] dark:text-[#9E988E]">
-              Auto-Resolved Configurations
-            </div>
-            <div className="mt-1 font-mono text-3xl font-semibold tabular-nums text-[#181615] dark:text-[#F4F1EA]">
+          <div className="border border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] rounded-xl p-5">
+            <div className="text-xs text-[#6E717A]">Auto-Resolved Configurations</div>
+            <div className="mt-1 font-mono text-3xl font-semibold tabular-nums text-[#111215] dark:text-[#F3F4F6]">
               {resolvedCount}
             </div>
-            <div className="mt-1 text-xs text-[#6E6A63]">
+            <div className="mt-1 text-xs text-[#6E717A]">
               Protocol prefixes, embed URLs, and redirect paths normalized
             </div>
           </div>
 
-          <div className="border border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] rounded-xl p-5">
-            <div className="text-xs text-[#6E6A63] dark:text-[#9E988E]">
-              Actionable Warnings
-            </div>
+          <div className="border border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] rounded-xl p-5">
+            <div className="text-xs text-[#6E717A]">Actionable Warnings</div>
             <div className="mt-1 font-mono text-3xl font-semibold tabular-nums text-[#B45309]">
               {issueCount}
             </div>
-            <div className="mt-1 text-xs text-[#6E6A63]">
+            <div className="mt-1 text-xs text-[#6E717A]">
               Unreachable URLs or pending domain DNS records
             </div>
           </div>
         </div>
 
-        {/* Detailed Audit Table */}
-        <div className="border border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] rounded-xl overflow-hidden">
+        <div className="border border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] rounded-xl overflow-hidden">
           {diagnostics.length === 0 ? (
             <div className="p-10 text-center space-y-3">
-              <div className="font-editorial text-2xl font-semibold text-[#181615] dark:text-[#F4F1EA]">
+              <div className="font-editorial text-2xl font-bold text-[#111215] dark:text-[#F3F4F6]">
                 Ready to Execute Daily Link & Domain Verification
               </div>
-              <p className="text-xs text-[#6E6A63] dark:text-[#9E988E] max-w-md mx-auto">
+              <p className="text-xs text-[#6E717A] max-w-md mx-auto">
                 Click "Scan & Auto-Resolve Issues" to perform live HTTP HEAD/GET reachability probes across all links, social handles, media embeds, redirect rules, and custom domains.
               </p>
               <button
                 type="button"
                 onClick={() => triggerDiagnostic(true)}
                 disabled={isRunningCheck}
-                className="mt-2 px-4 py-2 text-xs font-medium bg-[#181615] dark:bg-[#F4F1EA] text-[#FAF8F5] dark:text-[#0C0C0E] rounded-lg hover:opacity-90 inline-flex items-center gap-1.5 cursor-pointer"
+                className="mt-2 px-4 py-2 text-xs font-medium bg-[#111215] dark:bg-[#F3F4F6] text-white dark:text-[#0B0C0E] rounded-lg hover:opacity-90 inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <Wrench className="w-3.5 h-3.5" />
                 <span>Run First Health Audit Now</span>
@@ -230,7 +283,7 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="border-b border-[#E6E1DA] dark:border-[#26262B] bg-[#FAF8F5] dark:bg-[#121215] text-[#6E6A63]">
+                  <tr className="border-b border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E] text-[#6E717A]">
                     <th className="py-3 px-4 font-medium">Component / Block</th>
                     <th className="py-3 px-4 font-medium">Target Endpoint</th>
                     <th className="py-3 px-4 font-medium">Status</th>
@@ -238,18 +291,18 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
                     <th className="py-3 px-4 font-medium">Diagnostic & Resolution Detail</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#EFECE6] dark:divide-[#222228]">
+                <tbody className="divide-y divide-[#EFEFEA] dark:divide-[#1F222A]">
                   {diagnostics.map((item) => (
-                    <tr key={item.id} className="hover:bg-[#FAF8F5] dark:hover:bg-[#1C1C22]">
+                    <tr key={item.id} className="hover:bg-[#F6F6F3] dark:hover:bg-[#181B22]">
                       <td className="py-3 px-4">
-                        <div className="font-medium text-[#181615] dark:text-[#F4F1EA]">
+                        <div className="font-medium text-[#111215] dark:text-[#F3F4F6]">
                           {item.targetName}
                         </div>
-                        <div className="text-[11px] text-[#6E6A63] capitalize">
+                        <div className="text-[11px] text-[#6E717A] capitalize">
                           {item.targetType}
                         </div>
                       </td>
-                      <td className="py-3 px-4 font-mono text-[#6E6A63] truncate max-w-[240px]">
+                      <td className="py-3 px-4 font-mono text-[#6E717A] truncate max-w-[240px]">
                         {item.targetUrl}
                       </td>
                       <td className="py-3 px-4">
@@ -272,10 +325,10 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-right font-mono tabular-nums text-[#181615] dark:text-[#F4F1EA]">
+                      <td className="py-3 px-4 text-right font-mono tabular-nums text-[#111215] dark:text-[#F3F4F6]">
                         {item.httpStatusCode ? `HTTP ${item.httpStatusCode}` : 'DNS'} · {item.latencyMs}ms
                       </td>
-                      <td className="py-3 px-4 text-[#4A4640] dark:text-[#B8B3A8]">
+                      <td className="py-3 px-4 text-[#3F4147] dark:text-[#B2B6C2]">
                         <div>{item.detail}</div>
                         {item.resolutionNote && (
                           <div className="text-[#15803D] font-medium mt-0.5">
@@ -297,31 +350,127 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-8 space-y-10">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#E6E1DA] dark:border-[#26262B]">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 border-b border-[#DCDCD4] dark:border-[#262932]">
         <div>
-          <div className="flex items-center gap-2 text-xs text-[#6E6A63] dark:text-[#9E988E] mb-1">
-            <span>Editorial Design System</span>
+          <div className="flex items-center gap-2 text-xs text-[#6E717A] mb-1">
+            <span>Page Design & Typography Studio</span>
             <span aria-hidden="true">·</span>
-            <span>Typography, Palette & Identity</span>
+            <span>4 Page Architectures · 5 Font Systems · 4 Palettes</span>
           </div>
-          <h1 className="font-editorial text-3xl sm:text-4xl font-semibold tracking-tight text-[#181615] dark:text-[#F4F1EA]">
-            Appearance, Palette & Profile Identity
+          <h1 className="font-editorial text-3xl sm:text-4xl font-bold tracking-tight text-[#111215] dark:text-[#F3F4F6]">
+            Page Designs, Font Systems & Identity
           </h1>
         </div>
 
         {savedToast && (
           <div className="flex items-center gap-1.5 text-xs font-medium text-[#15803D]">
             <Check className="w-4 h-4" />
-            <span>Appearance & Profile Saved</span>
+            <span>Design & Typography Saved</span>
           </div>
         )}
       </div>
 
-      {/* Curated Editorial Theme Presets */}
+      {/* 01. Distinct Page Design Templates */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-[#181615] dark:text-[#F4F1EA]">
+        <div className="flex items-center gap-2 text-sm font-bold text-[#111215] dark:text-[#F3F4F6]">
+          <Layout className="w-4 h-4" />
+          <span>01. Select Page Design Architecture</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {LAYOUT_OPTIONS.map((lay) => {
+            const isSelected = profile.layoutMode === lay.id;
+            return (
+              <button
+                key={lay.id}
+                type="button"
+                onClick={() => {
+                  setFormState((prev) => ({
+                    ...prev,
+                    layoutMode: lay.id,
+                    fontPairing: lay.recommendedFont,
+                  }));
+                  onUpdateProfile({
+                    layoutMode: lay.id,
+                    fontPairing: lay.recommendedFont,
+                  });
+                }}
+                className={`text-left p-5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
+                  isSelected
+                    ? 'border-[#1D4ED8] ring-2 ring-[#1D4ED8]/20 bg-white dark:bg-[#181B22]'
+                    : 'border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] hover:border-[#9E9E95]'
+                }`}
+              >
+                <div>
+                  <div className="text-[11px] font-mono text-[#1D4ED8] dark:text-[#60A5FA] mb-1.5">
+                    {lay.badge}
+                  </div>
+                  <div className="font-editorial text-lg font-bold text-[#111215] dark:text-[#F3F4F6]">
+                    {lay.name}
+                  </div>
+                  <p className="text-xs text-[#6E717A] mt-1.5 leading-relaxed">
+                    {lay.desc}
+                  </p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-[#EFEFEA] dark:border-[#22252E] flex items-center justify-between text-xs font-medium">
+                  <span className={isSelected ? 'text-[#1D4ED8]' : 'text-[#6E717A]'}>
+                    {isSelected ? 'Active Page Design' : 'Apply Design + Font'}
+                  </span>
+                  {isSelected && <Check className="w-3.5 h-3.5 text-[#1D4ED8]" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 02. Custom Font Pairing Selector */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-sm font-bold text-[#111215] dark:text-[#F3F4F6]">
+          <Type className="w-4 h-4" />
+          <span>02. Select Typography & Font Pairing</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {FONT_OPTIONS.map((font) => {
+            const isSelected = (profile.fontPairing || 'bricolage') === font.id;
+            return (
+              <button
+                key={font.id}
+                type="button"
+                onClick={() => {
+                  setFormState((prev) => ({ ...prev, fontPairing: font.id }));
+                  onUpdateProfile({ fontPairing: font.id });
+                }}
+                className={`text-left p-5 rounded-xl border transition-all cursor-pointer page-font-scope ${font.cssClass} ${
+                  isSelected
+                    ? 'border-[#1D4ED8] ring-2 ring-[#1D4ED8]/20 bg-white dark:bg-[#181B22]'
+                    : 'border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] hover:border-[#9E9E95]'
+                }`}
+              >
+                <div className="page-display text-3xl font-bold text-[#111215] dark:text-[#F3F4F6] mb-2">
+                  Aa Bb 01
+                </div>
+                <div className="page-display text-base font-bold text-[#111215] dark:text-[#F3F4F6]">
+                  {font.displayFontName}
+                </div>
+                <div className="text-xs font-mono text-[#6E717A] mt-0.5">
+                  + {font.bodyFontName}
+                </div>
+                <p className="text-xs text-[#6E717A] mt-2 leading-relaxed">
+                  {font.characterNote}
+                </p>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 03. Color Palette Preset */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 text-sm font-bold text-[#111215] dark:text-[#F3F4F6]">
           <Palette className="w-4 h-4" />
-          <span>01. Editorial Color Palette Preset</span>
+          <span>03. Surface & Color Palette</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -344,8 +493,8 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
                 }}
                 className={`text-left p-5 rounded-xl border transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-[#C84B31] ring-1 ring-[#C84B31]/30 bg-white dark:bg-[#1C1C22]'
-                    : 'border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] hover:border-[#BDB6AA]'
+                    ? 'border-[#1D4ED8] ring-2 ring-[#1D4ED8]/20 bg-white dark:bg-[#181B22]'
+                    : 'border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] hover:border-[#9E9E95]'
                 }`}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -362,67 +511,29 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
                     style={{ backgroundColor: opt.swatchAccent }}
                   />
                 </div>
-                <div className="font-editorial text-lg font-semibold text-[#181615] dark:text-[#F4F1EA]">
+                <div className="font-editorial text-lg font-bold text-[#111215] dark:text-[#F3F4F6]">
                   {opt.name}
                 </div>
-                <p className="text-xs text-[#6E6A63] dark:text-[#9E988E] mt-1">
-                  {opt.desc}
-                </p>
+                <p className="text-xs text-[#6E717A] mt-1">{opt.desc}</p>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Spatial Layout Architecture */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-sm font-semibold text-[#181615] dark:text-[#F4F1EA]">
-          <Layout className="w-4 h-4" />
-          <span>02. Spatial Layout Architecture</span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {LAYOUT_OPTIONS.map((lay) => {
-            const isSelected = profile.layoutMode === lay.id;
-            return (
-              <button
-                key={lay.id}
-                type="button"
-                onClick={() => {
-                  setFormState((prev) => ({ ...prev, layoutMode: lay.id }));
-                  onUpdateProfile({ layoutMode: lay.id });
-                }}
-                className={`text-left p-5 rounded-xl border transition-all cursor-pointer ${
-                  isSelected
-                    ? 'border-[#C84B31] ring-1 ring-[#C84B31]/30 bg-white dark:bg-[#1C1C22]'
-                    : 'border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] hover:border-[#BDB6AA]'
-                }`}
-              >
-                <div className="font-editorial text-lg font-semibold text-[#181615] dark:text-[#F4F1EA]">
-                  {lay.name}
-                </div>
-                <p className="text-xs text-[#6E6A63] dark:text-[#9E988E] mt-1">
-                  {lay.desc}
-                </p>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Profile Identity & Biography Form */}
+      {/* 04. Creator Identity Form */}
       <form
         onSubmit={handleSaveProfile}
-        className="border border-[#E6E1DA] dark:border-[#26262B] bg-white dark:bg-[#16161A] rounded-xl p-6 space-y-5"
+        className="border border-[#DCDCD4] dark:border-[#262932] bg-white dark:bg-[#131519] rounded-xl p-6 space-y-5"
       >
-        <div className="flex items-center justify-between pb-4 border-b border-[#EFECE6] dark:border-[#222228]">
-          <div className="flex items-center gap-2 text-sm font-semibold text-[#181615] dark:text-[#F4F1EA]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#EFEFEA] dark:border-[#22252E]">
+          <div className="flex items-center gap-2 text-sm font-bold text-[#111215] dark:text-[#F3F4F6]">
             <User className="w-4 h-4" />
-            <span>03. Creator Identity, Bio & Editorial Ribbon</span>
+            <span>04. Creator Identity, Bio & Marquee Ribbon</span>
           </div>
           <button
             type="submit"
-            className="px-4 py-2 text-xs font-medium bg-[#181615] dark:bg-[#F4F1EA] text-[#FAF8F5] dark:text-[#0C0C0E] rounded-lg hover:opacity-90 flex items-center gap-1.5 cursor-pointer"
+            className="px-4 py-2 text-xs font-medium bg-[#111215] dark:bg-[#F3F4F6] text-white dark:text-[#0B0C0E] rounded-lg hover:opacity-90 flex items-center gap-1.5 cursor-pointer"
           >
             <Check className="w-3.5 h-3.5" />
             <span>Save Identity Changes</span>
@@ -431,114 +542,90 @@ export const AppearanceAndHealthView: React.FC<AppearanceAndHealthViewProps> = (
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Display Name
             </label>
             <input
               type="text"
               value={formState.displayName}
               onChange={(e) => setFormState({ ...formState, displayName: e.target.value })}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Username Handle
             </label>
             <input
               type="text"
               value={formState.handle}
               onChange={(e) => setFormState({ ...formState, handle: e.target.value })}
-              className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Discipline / Title
             </label>
             <input
               type="text"
               value={formState.discipline}
               onChange={(e) => setFormState({ ...formState, discipline: e.target.value })}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Location
             </label>
             <input
               type="text"
               value={formState.location}
               onChange={(e) => setFormState({ ...formState, location: e.target.value })}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Availability Note
             </label>
             <input
               type="text"
               value={formState.availabilityText}
               onChange={(e) => setFormState({ ...formState, availabilityText: e.target.value })}
-              className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
+            <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
               Direct Inquiry Email
             </label>
             <input
               type="email"
               value={formState.contactEmail}
               onChange={(e) => setFormState({ ...formState, contactEmail: e.target.value })}
-              className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+              className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-[#4A4640] dark:text-[#B8B3A8] mb-1">
-            Editorial Biography
+          <label className="block text-xs font-medium text-[#3F4147] dark:text-[#B2B6C2] mb-1">
+            Biography
           </label>
           <textarea
             rows={3}
             value={formState.bio}
             onChange={(e) => setFormState({ ...formState, bio: e.target.value })}
-            className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
+            className="w-full px-3 py-2 text-xs rounded-lg border border-[#DCDCD4] dark:border-[#262932] bg-[#F6F6F3] dark:bg-[#0B0C0E]"
           />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center pt-2 border-t border-[#EFECE6] dark:border-[#222228]">
-          <div className="md:col-span-3 flex items-center gap-2">
-            <input
-              id="marquee-toggle"
-              type="checkbox"
-              checked={formState.showMarquee}
-              onChange={(e) => setFormState({ ...formState, showMarquee: e.target.checked })}
-              className="rounded border-[#D8D2C9]"
-            />
-            <label htmlFor="marquee-toggle" className="text-xs font-medium text-[#181615] dark:text-[#F4F1EA]">
-              Display Marquee Section Divider
-            </label>
-          </div>
-          <div className="md:col-span-9">
-            <input
-              type="text"
-              value={formState.marqueeText}
-              onChange={(e) => setFormState({ ...formState, marqueeText: e.target.value })}
-              placeholder="Marquee ribbon text..."
-              className="w-full px-3 py-2 text-xs rounded-lg border border-[#D8D2C9] dark:border-[#2E2E36] bg-[#FAF8F5] dark:bg-[#0C0C0E]"
-            />
-          </div>
         </div>
       </form>
     </div>
