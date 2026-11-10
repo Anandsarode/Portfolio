@@ -1,0 +1,6 @@
+{
+  "name": "Atelier Link",
+  "description": "Customizable editorial link-in-bio landing page studio with drag-and-drop analytics and live custom domain DNS and SSL integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
